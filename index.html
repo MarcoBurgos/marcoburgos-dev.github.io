@@ -7,9 +7,9 @@
 
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>A&amp;E Wedding </title>
+	<title>A&amp;E Boda </title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Boda Andrea y Édgar 15 de Noviembre de 2020" />
+	<meta name="description" content="Boda Andrea y Edgar 15 de Noviembre de 2020" />
 	<meta name="keywords" content="Boda" />
 	<meta name="author" content="Marco Burgos" />
 
@@ -24,8 +24,10 @@
 	<meta name="twitter:url" content="" />
 	<meta name="twitter:card" content="" />
 
+
+
 	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="icon" href="images/flaticon/favicon.ico">
 
 	<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,400italic,700' rel='stylesheet' type='text/css'>
 	<link href="https://fonts.googleapis.com/css?family=Clicker+Script" rel="stylesheet">
@@ -56,29 +58,30 @@
 	<script>
 	$(document).ready(function() {
 		$("#target").submit(function( event ) {
+			var emailFormForm = $("#email").val();
+			var aws_url = "https://j0nvzsvwjf.execute-api.us-east-1.amazonaws.com/dev/guest/" + emailFormForm
+			console.log(aws_url)
 
 			$("#btnSearchRegister").html('Cargando...');
 				$.ajax({
     			type:"GET",
-    			url:"https://jsonplaceholder.typicode.com/todos/1",
+    			url: aws_url,
     			success: function(data) {
-						const number_guests = {
-						  one: "Guest one",
-						  two: "Guest two",
-						  three: "Guest three",
-						  four: "Guest four"
-						};
+						var guest_names = data["guests"].split(",");
+						var name_from_db = data["name"];
+						var tickets_from_db = data["no_of_guests"];
 
-						$.each(number_guests, function(key, value) {
+						$.each(guest_names, function(key, value) {
 							var tags = "<div class='container-guest-names-list'>" +
 							"<div class='container-guest-elements'>" +
 							"<label class='label-sign-up' for='"+ value + "'>"+ value + "</label>" +
   						"<input type='checkbox' id='id_" + value + "'  name='" + value + "' checked='yes' value='"+ value + "'>"
 							" </div>" +
 							"</div>";
-							$("h5").append(tags)
+							$("h5").append(tags);
 						})
 
+						$("#replace_text").html('Hola, ' + name_from_db + ', tienes ' + tickets_from_db + ' boletos disponibles' );
 						$("#target").hide(300);
 						$("#box-guest").show(500);
     			},
@@ -258,7 +261,7 @@ input {
 	        <div class="navbar-header">
 	        	<!-- Mobile Toggle Menu Button -->
 				<a href="#" class="js-qbootstrap-nav-toggle qbootstrap-nav-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><i></i></a>
-	          	<a class="navbar-brand" href="index.html">A&amp;E Wedding</a>
+	          	<a class="navbar-brand" href="index.html">A&amp;E Boda</a>
 	        </div>
 	        <div id="navbar" class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav navbar-right">
@@ -308,13 +311,13 @@ input {
 			<div class="row animate-box">
 				<div class="col-md-8 col-md-offset-2 text-center">
 					<div class="col-md-5 col-sm-5 col-xs-5 nopadding">
-						<img src="images/bride.jpg" class="img-responsive" alt="Foto novio">
+						<img src="images/bride.jpg" class="img-responsive" alt="Foto novia">
 						<h3>Andrea Peña</h3>
 						<span>Novia</span>
 					</div>
-					<div class="col-md-2 col-sm-2 col-xs-2 nopadding"><h2 class="amp-center"><img src="images/flaticon/svg/003-luxury.svg" class="svg img-responsive" alt="Foto novio"></h2></div>
+					<div class="col-md-2 col-sm-2 col-xs-2 nopadding"><h2 class="amp-center"><img src="images/flaticon/svg/003-luxury.svg" style="border-radius: 0%;" class="svg img-responsive" alt="Foto novio"></h2></div>
 					<div class="col-md-5 col-sm-5 col-xs-5 nopadding">
-						<img src="images/groom.jpg" class="img-responsive" alt="Foto novia">
+						<img src="images/groom.jpg" class="img-responsive" alt="Foto novio">
 						<h3>Edgar Orozco</h3>
 						<span>Novio</span>
 					</div>
@@ -323,7 +326,7 @@ input {
 		</div>
 	</div>
 
-	<div id="qbootstrap-countdown"  style="background-image: url(images/cover_bg_2.jpg); background-size: cover; background-position: center;" data-section="wedding-day">
+	<div id="qbootstrap-countdown"  style="background-image: url(images/cover_bg_2.jpg); background-size: cover; background-position: center; padding-top: 2em; padding-bottom: 2em" data-section="wedding-day">
 		<div class="overlay"></div>
 		<div class="display-over">
 			<div class="container">
@@ -337,7 +340,7 @@ input {
 				<div class="row animate-box">
 					<div class="col-md-8 col-md-offset-2 text-center">
 						<p class="countdown">
-							<span id="days"></span> <br>
+							<span id="days"></span>
 							<span id="hours"></span>
 							<span id="minutes"></span>
 							<span id="seconds"></span>
@@ -355,36 +358,26 @@ input {
 					<div class="col-md-12 text-center section-heading svg-sm-2 colored">
 						<img src="images/flaticon/svg/002-wedding-couple.svg" class="svg" alt="Header display">
 						<h2>Novia &amp; Novio</h2>
-						<p>Estamos convencidos que la elección de la pareja es sin duda, una de las decisiones más importantes de la vida. Estamos muy contentos de habernos elegido mutuamente</p>
+						<p>Estamos convencidos que la elección de la pareja es sin duda, una de las decisiones más importantes de la vida. Estamos muy contentos de habernos elegido mutuamente.</p>
 					</div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-6">
 					<div class="couple bride text-center animate-box">
-						<img src="images/bride2.jpg" class="img-responsive" alt="Foto Novio perfil">
+						<img src="images/bride1.jpg" class="img-responsive" alt="Foto Novia perfil">
 						<div class="desc">
 							<h2>Andrea Peña</h2>
-							<p>Edgar, gracias por escogerme como la mujer de tu vida. Estoy muy agradecida con Dios por ponernos en el mismo camino y permitirnos vivir juntos cada momento. Te admiro, te respeto y te prometo ser la mejor versión de mi misma todos los días</p>
-							<ul class="social social-circle">
-								<li><a href="#"><i class="icon-twitter"></i></a></li>
-								<li><a href="#"><i class="icon-facebook"></i></a></li>
-								<li><a href="#"><i class="icon-instagram"></i></a></li>
-							</ul>
+							<p>Edgar, gracias por escogerme como la mujer de tu vida. Estoy muy agradecida con Dios por ponernos en el mismo camino y permitirnos vivir juntos cada momento. Te admiro, te respeto y te prometo ser la mejor versión de mi misma todos los días.</p>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="couple groom text-center animate-box">
-						<img src="images/groom2.jpg" class="img-responsive" alt="Foto novia perfil">
+						<img src="images/groom2.jpg" class="img-responsive" alt="Foto novio perfil">
 						<div class="desc">
 							<h2>Edgar Orozco</h2>
 							<p>Andrea, desde que te conocí le pedí a Dios encontrar a alguien como tu para el resto de mi vida, fui tan claro y Dios tan bueno que me ha puesto a tu lado para compartir toda mi vida contigo. Te amo y siempre seré tu astronauta.</p>
-							<ul class="social social-circle">
-								<li><a href="#"><i class="icon-twitter"></i></a></li>
-								<li><a href="#"><i class="icon-facebook"></i></a></li>
-								<li><a href="#"><i class="icon-instagram"></i></a></li>
-							</ul>
 						</div>
 					</div>
 				</div>
@@ -393,16 +386,15 @@ input {
 	</div>
 
 
-	<div id="qbootstrap-when-where" data-section="when-where">
+	<div id="qbootstrap-when-where" data-section="when-where" style="padding-top: 0em;">
 		<div class="container">
 			<div class="row animate-box">
 				<div class="col-md-8 col-md-offset-2">
 					<div class="col-md-12 text-center section-heading svg-sm colored">
-						<img src="images/flaticon/svg/005-black.svg" class="svg" alt="Foto section">
-						<h2>Ceremonías &amp; Fiesta</h2>
+						<img src="images/flaticon/svg/005-black.svg" class="svg" style="margin-bottom:0px;" alt="Foto section">
+						<h2>Ceremonia Religiosa <br>&amp; Recepción</h2>
 						<div class="row">
 						<div class="col-md-10 col-md-offset-1 subtext">
-							<p><b>Detalles de la boda e información de las ceremonías y fiesta para sus invitados, lo más detallado que puedan para que nadie los moleste en cuanto se acerca el día, créanme lo van a hacer</b></p>
 						</div>
 					</div>
 					</div>
@@ -416,7 +408,7 @@ input {
 							<h3>Ceremonia Religiosa</h3>
 							<div class="row">
 								<div class="col-md-2 col-md-push-5">
-									<div class="icon-tip">
+									<div class="icon-tip" style="margin-bottom: 20px;">
 										<span class="icon"><i class="icon-heart-o"></i></span>
 									</div>
 								</div>
@@ -435,7 +427,7 @@ input {
 								</div>
 							</div>
 							<p><b>Templo Nuestra Señora de la Salud</b><br>
-								Paseo Lomas Altas 265. <br> Lomas del Valle, 45128. Zapopan, Jalisco.
+								Paseo Lomas Altas 265. <br> Lomas del Valle, 45128. Zapopan, Jalisco
 							</p>
 							<!-- <p><a href="#" class="btn btn-primary btn-sm">Conocer más</a></p> -->
 						</div>
@@ -445,10 +437,10 @@ input {
 					<div class="wedding-events">
 						<div class="ceremony-bg" style="background-image: url(images/wed-party.jpg);"></div>
 						<div class="desc">
-							<h3>La Fiesta</h3>
+							<h3>Recepción</h3>
 							<div class="row">
 								<div class="col-md-2 col-md-push-5">
-									<div class="icon-tip">
+									<div class="icon-tip" style="margin-bottom: 20px;">
 										<span class="icon"><i class="icon-heart-o"></i></span>
 									</div>
 								</div>
@@ -476,11 +468,10 @@ input {
 
 				<div class="col-md-12 text-center animate-box" style="margin-top: 15px;">
 					<div class="wedding-events">
-						<div class="ceremony-bg col-md-8" style="background-image: url(images/wed-registry.jpg); height: 329.63px;"></div>
-						<div class="desc col-md-4">
+						<div class="ceremony-bg col-md-8" style="background-image: url(images/wed-registry.jpg); height: 329.63px;">
+						</div>
+						<div class="desc col-md-4" style="height: 329.63px;">
 							<h3>Mesa de regalos</h3>
-							<p><b>Liverpool</b><br>
-								50326579
 							</p>
 							<p><a href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/50326579" class="btn btn-primary btn-sm">Ir a la mesa de regalos</a></p>
 						</div>
@@ -495,7 +486,7 @@ input {
 
 
 
-	<div id="qbootstrap-started" class="qbootstrap-bg" data-section="rsvp"  style="background-image: url(images/cover_bg_1.jpg); background-size: cover; background-position: center;">
+	<div id="qbootstrap-started" class="qbootstrap-bg" data-section="rsvp"  style="background-image: url(images/cover_bg_1.jpg); background-size: cover; background-position: center; padding-top: 2em;">
 		<div class="overlay"></div>
 		<div class="container">
 			<div class="row animate-box">
@@ -533,7 +524,8 @@ input {
 			<div style="display: none" id="box-guest">
 				<form id="saveGuests" class="sign-up">
 					<h2 class="sign-up-title">Confirma a tus invitados</h2>
-					<h5 class="intro_guests" style="margin-bottom:15px; font-family: 'Source Sans Pro', Arial, sans-serif;">Hola, {{invitado_nombre}}, tienes {{invitation_num}} boletos disponibles, marca la casilla de los que asitirán y deja en blanco los invitados que no asistirán</h5>
+					<h5 id="replace_text" class="intro_guests" style="margin-bottom:15px; font-family: 'Source Sans Pro', Arial, sans-serif;">Hola, {{invitado_nombre}}, tienes {{invitation_num}} boletos disponibles</h5>
+					<h5 class="intro_guests" style="margin-bottom:15px; font-family: 'Source Sans Pro', Arial, sans-serif;">, marca la casilla de los que asitirán y deja en blanco los invitados que no asistirán</h5>
 					<!-- <input type="text" id="idLabel_1" class="sign-up-input" placeholder="Nombre Invitado" autofocus disabled>
 					<input type="checkbox" id="id_1"  name="guests" checked="yes" value="{guest}"></td> -->
 
@@ -551,8 +543,7 @@ input {
 		<div class="container">
 			<div class="row row-bottom-padded-sm">
 				<div class="col-md-12">
-					<p class="copyright text-center">&copy; 2020 <a href="index.html">A&amp;E Wedding</a>. Todos los derechos reservados. <br>
-						Imágenes de <a href="http://unsplash.com/" target="_blank">Unsplash. </a> <br>
+					<p class="copyright text-center">&copy; 2020 <a href="index.html">A&amp;E Boda</a>. Todos los derechos reservados. <br>
 					Desarrollo de <a href="https://github.com/MarcoBurgos" target="_blank">Marco Burgos</a></p>
 				</div>
 			</div>

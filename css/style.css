@@ -709,11 +709,29 @@ h1, h2, h3, h4, h5, h6 {
   display: inline-block;
   font-family: "Clicker Script", cursive;
 }
+
+@media screen and (max-width: 768px) {
+  .countdown span {
+    font-size: 50px;
+    font-family: "Source Sans Pro", Arial, sans-serif;
+    margin: 0 5px !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .countdown small {
+    display: block;
+    font-size: 9px;
+    font-family: "Source Sans Pro", Arial, sans-serif;
+    letter-spacing: 5px;
+  }
+}
+
 #qbootstrap-countdown .countdown small {
   display: block;
-  font-size: 14px;
+  font-size: 12px !important;
   font-family: "Source Sans Pro", Arial, sans-serif;
-  letter-spacing: 10px;
+  letter-spacing: 2px !important;
   text-transform: uppercase;
 }
 #qbootstrap-countdown .display-over {

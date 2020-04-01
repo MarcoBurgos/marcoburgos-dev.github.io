@@ -7,6 +7,7 @@ frameworkVersion: ">=1.1.0 <2.0.0"
 provider:
   name: aws
   runtime: python3.8
+  memorySize: 128
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
   iamRoleStatements:
@@ -23,6 +24,7 @@ provider:
 functions:
   create:
     handler: guest/create.create
+    description: This function will receive an list an create a guest into guest table in DynamoDB
     events:
       - http:
           path: guest
@@ -31,6 +33,7 @@ functions:
 
   list:
     handler: guest/list.list
+    description: This function will list all records in the guest table in DynamoDB
     events:
       - http:
           path: guest
@@ -39,6 +42,7 @@ functions:
 
   get:
     handler: guest/get.get
+    description: This function will receive an email as inpunt and return a record if there is a match
     events:
       - http:
           path: guest/{id}
@@ -47,6 +51,7 @@ functions:
 
   update:
     handler: guest/update.update
+    description: This function will rsvp a guest 
     events:
       - http:
           path: guest/{id}
@@ -55,6 +60,7 @@ functions:
 
   delete:
     handler: guest/delete.delete
+    description: This function will receive an email as inpunt and delete a record if there is a match
     events:
       - http:
           path: guest/{id}
@@ -65,7 +71,6 @@ resources:
   Resources:
     GuestsDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
           -

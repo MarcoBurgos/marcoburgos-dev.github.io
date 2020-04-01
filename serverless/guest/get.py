@@ -20,6 +20,9 @@ def get(event, context):
     # create a response
     response = {
         "statusCode": 200,
+        "headers": {"Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "X-Content-Type-Options": "nosniff"},
         "body": json.dumps(result['Item'],
                            cls=decimalencoder.DecimalEncoder)
     }
